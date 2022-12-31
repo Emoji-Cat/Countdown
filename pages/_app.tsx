@@ -1,11 +1,12 @@
-// pages/_app.js
+import '../styles/globals.css'
+import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
-export default function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Emoji Cat 😽</title>
+        <title>🕰 Countdown</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="google-site-verification" content="Fj72TTEG80mXVgHNIA4fKeb3hy4Oa-20LvlcvTncKFI" />
@@ -21,4 +22,6 @@ export default function MyApp({ Component, pageProps }) {
       <Component {...pageProps} />
     </>
   )
-};
+}
+
+export default MyApp
