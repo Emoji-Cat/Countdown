@@ -1,76 +1,12 @@
-import tippy from 'tippy.js';
-import 'tippy.js/dist/tippy.css'; // optional for styling
-import EmojiUnicode from '../components/datasources/emoji-unicode.js';
+import moment from 'moment';
 
-export { default as getServerSideProps } from "../lib/server-props";
-
-function BigSection(props) {
-  const title = props.bighead.bighead
-  const sections = props.bighead.sections
-  return (
-    <li className='big-section' key={title}>
-      <h2>
-        { title }
-      </h2>
-      <ul>
-        {
-          sections.map((section => <MediumSection section={section}/>))
-        }
-      </ul>
-    </li>
-  )
-}
-
-function MediumSection(props) {
-  const title = props.section.mediumhead
-  const contents = props.section.contents
-  return (
-    <li>
-      <h4>
-        { title }
-      </h4>
-      {
-        contents.map((content) => <Emoji content={content}/>)
-      }
-    </li>
-  )
-}
-
-function Emoji(props) {
-  const unicode = props.content.code.split('_').map(c => '0x' + c);
-  const name = props.content.name; // Emoji name
-  return (
-    <button onClick={() => {
-      navigator.clipboard.writeText(String.fromCodePoint(...unicode));
-    }} className='card'>
-      <h3> { String.fromCodePoint(...unicode) } </h3>
-    </button>
-  )
-}
-
-export default function Home({ deviceType }) {
-  if (typeof window !== 'undefined') {
-    tippy(".card", {
-      animation: 'fade',
-      content: '복사되었습니다.',
-      trigger: 'click',
-      hideOnClick: false,
-      onShow(instance) {
-        setTimeout(() => {
-          instance.hide();
-        }, 1000);
-      }
-    });
-  }
-
-  const emojis = EmojiUnicode()
-
+export default function Home() {
   return (
     <div className="container">
       <main>
         <h1 className="title">
           {
-            deviceType === 'mobile' ? '이모지 고양이 추천 이모지' : '이모지 고양이의 추천 이모지'
+            
           }
         </h1>
 
@@ -80,7 +16,6 @@ export default function Home({ deviceType }) {
 
         <ul className="grid">
           {
-            emojis.map((bighead) => <BigSection bighead={bighead}/>)
           }
         </ul>
       </main>
