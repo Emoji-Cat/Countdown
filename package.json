@@ -5,7 +5,10 @@
   "description": "Countdown everything",
   "author": "Emoji Cat <emojiotaku@gmail.com>",
   "license": "MIT",
-  "repository": "https://github.com/Emoji-Cat/Countdown.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Emoji-Cat/Countdown.git"
+  },
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
@@ -13,9 +16,16 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "latest",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "next": "^13.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "tippy.js": "^6.3.7"
+  },
+  "bugs": {
+    "url": "https://github.com/Emoji-Cat/Countdown/issues"
+  },
+  "homepage": "https://github.com/Emoji-Cat/Countdown#readme",
+  "directories": {
+    "lib": "lib"
   }
 }
