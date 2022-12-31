@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "countdown",
+  "version": "0.0.1",
+  "description": "Countdown everything",
+  "author": "Emoji Cat <emojiotaku@gmail.com>",
+  "license": "MIT",
+  "repository": "https://github.com/Emoji-Cat/Countdown.git",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "tippy.js": "^6.3.7"
+  }
+}
