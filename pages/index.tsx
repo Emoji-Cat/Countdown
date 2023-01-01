@@ -3,6 +3,9 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
+import moment from "moment";
+
 import styles from "../styles/Home.module.css";
 import { remainDatetime } from "../lib/remain-datetime";
 
@@ -32,7 +35,7 @@ const Home: NextPage = () => {
       return;
     }
 
-    var target: Date = new Date();
+    var target: Date = moment().add(1, 'day').toDate();
     if (router.query.date) {
       target = new Date(router.query.date as string);
     }
