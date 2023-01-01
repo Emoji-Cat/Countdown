@@ -34,7 +34,7 @@
 }
 
 .title a {
-  color: #0070f3;
+  color: #7f7d9e;
   text-decoration: none;
 }
 
@@ -81,6 +81,8 @@
 .card {
   margin: 1rem;
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
   text-align: left;
   color: inherit;
   text-decoration: none;
@@ -93,13 +95,34 @@
 .card:hover,
 .card:focus,
 .card:active {
-  color: #0070f3;
-  border-color: #0070f3;
+  color: #7f7d9e;
+  border-color: #7f7d9e;
 }
 
-.card h2 {
-  margin: 0 0 1rem 0;
+.card input {
+  color: #fff;
+  background: transparent;
+  outline: none;
+  border: none;
+}
+
+.card input[type=text] {
+  margin: 0 0 2rem 0;
   font-size: 1.5rem;
+  border-bottom: solid;
+}
+
+.card input::placeholder {
+  color: #7f7d9e;
+}
+
+.card input[type=datetime-local] {
+  margin: 0 0 0 0;
+  font-size: 1.5rem;
+}
+
+.card input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }
 
 .card p {

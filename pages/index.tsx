@@ -2,9 +2,9 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
-import moment from "moment";
+import moment, { Moment } from "moment";
 
 import styles from "../styles/Home.module.css";
 import { remainDatetime } from "../lib/remain-datetime";
@@ -12,13 +12,14 @@ import { remainDatetime } from "../lib/remain-datetime";
 const Home: NextPage = () => {
   const router = useRouter();
   const [partyTime, setPartyTime] = useState(false);
+  const [target, setTarget] = useState(moment().add(1, 'day'));
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
 
-  function evaluate(target) {
-    const { d, h, m, s } = remainDatetime(target);
+  function evaluate(target: Moment) {
+    const { d, h, m, s } = remainDatetime(target.toDate());
 
     setDays(d);
     setHours(h);
@@ -30,21 +31,34 @@ const Home: NextPage = () => {
     }
   }
 
+  function onChange(event: ChangeEvent<HTMLInputElement>) {
+    const newTarget = moment(new Date(event.target.value));
+    router.replace(
+      "/?date=" + newTarget.format(moment.HTML5_FMT.DATETIME_LOCAL),
+      "/?date=" + newTarget.format(moment.HTML5_FMT.DATETIME_LOCAL),
+      { shallow: true }
+    )
+    setTarget(newTarget);
+    evaluate(newTarget);
+  }
+
   useEffect(() => {
     if (!router.isReady) {
       return;
     }
 
-    var target: Date = moment().add(1, 'day').toDate();
     if (router.query.date) {
-      target = new Date(router.query.date as string);
+      const date = moment(router.query.date as string);
+      if (date.isValid) {
+        setTarget(date);
+      }
     }
     evaluate(target);
 
     const interval = setInterval(() => evaluate(target), 1000);
 
     return () => clearInterval(interval);
-  }, [router.isReady]);
+  }, [router.isReady, router.query]);
 
   return (
     <div className={styles.container}>
@@ -53,9 +67,21 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <div className={styles.card}>
+        <input type="text" value={router.query.title} placeholder="어떤 기념일인가요?" />
+        <input
+          type="datetime-local"
+          id="date"
+          name="date"
+          value={target.format(moment.HTML5_FMT.DATETIME_LOCAL)}
+          min={moment().format(moment.HTML5_FMT.DATETIME_LOCAL)}
+          onChange={(e) => onChange(e)}
+        />
+      </div>
+
       {partyTime ? (
         <>
-          <h1>{router.query.title ?? "시간이 다 됐어요!"}</h1>
+          <h1>{router.query.final ?? "시간이 다 됐어요!"}</h1>
           {/* <video autoPlay loop muted>
             <source src="/party.mp4" />
           </video> */}
@@ -74,17 +100,17 @@ const Home: NextPage = () => {
             </div>
             <span className="divider">:</span>
             <div className="timer-segment">
-              <span className="time">{hours}</span>
+              <span className="time">{hours.toLocaleString('es-US', {minimumIntegerDigits: 2})}</span>
               <span className="label">Hours</span>
             </div>
             <span className="divider">:</span>
             <div className="timer-segment">
-              <span className="time">{minutes}</span>
+              <span className="time">{minutes.toLocaleString('es-US', {minimumIntegerDigits: 2})}</span>
               <span className="label">Minutes</span>
             </div>
             <span className="divider">:</span>
             <div className="timer-segment">
-              <span className="time">{seconds}</span>
+              <span className="time">{seconds.toLocaleString('es-US', {minimumIntegerDigits: 2})}</span>
               <span className="label">Seconds</span>
             </div>
           </div>
