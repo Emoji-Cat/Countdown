@@ -13,6 +13,8 @@ const Home: NextPage = () => {
   const router = useRouter();
   const [partyTime, setPartyTime] = useState(false);
   const [target, setTarget] = useState(moment().add(1, 'day'));
+  const [title, setTitle] = useState("");
+  const [finalMessage, setFinalMessage] = useState("");
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
@@ -31,11 +33,27 @@ const Home: NextPage = () => {
     }
   }
 
-  function onChange(event: ChangeEvent<HTMLInputElement>) {
+  function onChangeTitle(event: ChangeEvent<HTMLInputElement>) {
+    setTitle(event.target.value);
+  }
+
+  function onKeyUpTitle(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key !== 'Enter') {
+      return;
+    }
+
+    router.replace(
+      "/?date=" + target.format(moment.HTML5_FMT.DATETIME_LOCAL) + "&title=" + title,
+      "/?date=" + target.format(moment.HTML5_FMT.DATETIME_LOCAL) + "&title=" + title,
+      { shallow: true }
+    )
+  }
+
+  function onChangeDateTime(event: ChangeEvent<HTMLInputElement>) {
     const newTarget = moment(new Date(event.target.value));
     router.replace(
-      "/?date=" + newTarget.format(moment.HTML5_FMT.DATETIME_LOCAL),
-      "/?date=" + newTarget.format(moment.HTML5_FMT.DATETIME_LOCAL),
+      "/?date=" + newTarget.format(moment.HTML5_FMT.DATETIME_LOCAL) + "&title=" + router.query.title,
+      "/?date=" + newTarget.format(moment.HTML5_FMT.DATETIME_LOCAL) + "&title=" + router.query.title,
       { shallow: true }
     )
     setTarget(newTarget);
@@ -45,6 +63,14 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (!router.isReady) {
       return;
+    }
+
+    if (router.query.title) {
+      setTitle(router.query.title as string);
+    }
+
+    if (router.query.finalMessage) {
+      setFinalMessage(router.query.finalMessage as string);
     }
 
     if (router.query.date) {
@@ -58,7 +84,7 @@ const Home: NextPage = () => {
     const interval = setInterval(() => evaluate(target), 1000);
 
     return () => clearInterval(interval);
-  }, [router.isReady, router.query]);
+  }, [router.isReady, router.query, target, title]);
 
   return (
     <div className={styles.container}>
@@ -68,20 +94,26 @@ const Home: NextPage = () => {
       </Head>
 
       <div className={styles.card}>
-        <input type="text" value={router.query.title} placeholder="어떤 기념일인가요?" />
+        <input
+          type="text"
+          value={title}
+          placeholder="어떤 기념일인가요?"
+          onChange={(e) => onChangeTitle(e)}
+          onKeyUp={(e) => onKeyUpTitle(e)}
+        />
         <input
           type="datetime-local"
           id="date"
           name="date"
           value={target.format(moment.HTML5_FMT.DATETIME_LOCAL)}
           min={moment().format(moment.HTML5_FMT.DATETIME_LOCAL)}
-          onChange={(e) => onChange(e)}
+          onChange={(e) => onChangeDateTime(e)}
         />
       </div>
 
       {partyTime ? (
         <>
-          <h1>{router.query.final ?? "시간이 다 됐어요!"}</h1>
+          <h1>{finalMessage ?? "시간이 다 됐어요!"}</h1>
           {/* <video autoPlay loop muted>
             <source src="/party.mp4" />
           </video> */}
