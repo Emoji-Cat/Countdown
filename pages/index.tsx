@@ -37,7 +37,7 @@ const Home: NextPage = () => {
     setTitle(event.target.value);
   }
 
-  function onKeyUpTitle(event: KeyboardEvent<HTMLInputElement>) {
+  function onKeyUpTitle(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key !== 'Enter') {
       return;
     }
