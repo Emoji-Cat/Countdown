@@ -52,8 +52,8 @@ const Home: NextPage = () => {
   function onChangeDateTime(event: ChangeEvent<HTMLInputElement>) {
     const newTarget = moment(new Date(event.target.value));
     router.replace(
-      "/?date=" + newTarget.format(moment.HTML5_FMT.DATETIME_LOCAL) + "&title=" + router.query.title,
-      "/?date=" + newTarget.format(moment.HTML5_FMT.DATETIME_LOCAL) + "&title=" + router.query.title,
+      "/?date=" + newTarget.format(moment.HTML5_FMT.DATETIME_LOCAL) + "&title=" + (title ?? ""),
+      "/?date=" + newTarget.format(moment.HTML5_FMT.DATETIME_LOCAL) + "&title=" + (title ?? ""),
       { shallow: true }
     )
     setTarget(newTarget);
